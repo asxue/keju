@@ -12,8 +12,7 @@ negative control group.
 
 ### R package installation
 
-**Keju** relies on [cmdstanr](https://mc-stan.org/cmdstanr/), which should
-be properly installed first.
+**Keju** relies on [cmdstanr](https://mc-stan.org/cmdstanr/). To install cmdstanr, run
 
 ``` r
 install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
