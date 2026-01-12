@@ -2,6 +2,9 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom basilisk basiliskRun
+#' @importFrom basilisk basiliskStart
+#' @importFrom basilisk basiliskStop
 #' @importFrom cmdstanr cmdstan_model
 #' @importFrom dplyr %>%
 #' @importFrom dplyr group_by

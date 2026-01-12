@@ -93,12 +93,17 @@ process <- function(keju,
     if (is.null(keju$counts) & is.null(keju$filtered_counts)) {
         stop('No counts object or filtered_counts object detected. Please run keju_from_counts to create a counts first, and optionally filter counts using the built-in filtering function.')
     }
-    py_require("numpy")
-    py_require("pandas")
-    py_require("formulaic")
+    # py_require("numpy")
+    # py_require("pandas")
+    # py_require("formulaic")
+    proc <- basiliskStart(processing_env)
+    on.exit(basiliskStop(proc))
 
-    source_python(system.file('stan', paste0('process.py'), package='keju'))
-    keju <- py_process(keju, G, infer_differential_activity)
+    keju <- basiliskRun(proc, fun=function(keju, G, infer_differential_activity) {
+        source_python(system.file('stan', paste0('process.py'), package='keju'))
+        return(py_process(keju, G, infer_differential_activity)) 
+    }, keju=keju, G=G, infer_differential_activity=infer_differential_activity)
+
     return(keju)
 }
 
