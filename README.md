@@ -1,6 +1,5 @@
 # Keju
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/asxue/keju/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/asxue/keju/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 **Keju** is an R package for scoring FACS-based DMS experiments with
