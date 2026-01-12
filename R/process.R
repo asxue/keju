@@ -100,7 +100,7 @@ process <- function(keju,
     on.exit(basiliskStop(proc))
 
     keju <- basiliskRun(proc, fun=function(keju, G, infer_differential_activity) {
-        source_python(system.file('stan', paste0('process.py'), package='keju'))
+        source_python(system.file('python', 'process.py', package='keju'))
         return(py_process(keju, G, infer_differential_activity)) 
     }, keju=keju, G=G, infer_differential_activity=infer_differential_activity)
 
@@ -123,7 +123,7 @@ use_motif_shrinkage <- function(keju,
     py_require("pandas")
     py_require("formulaic")
 
-    source_python(system.file('stan', paste0('process.py'), package='keju'))
+    source_python(system.file('python', 'process.py', package='keju'))
     
     keju <- process(keju, G, infer_differential_activity)
 
@@ -149,7 +149,7 @@ use_covariate_slope_intercept <- function(keju,
     py_require("pandas")
     py_require("formulaic")
 
-    source_python(system.file('stan', paste0('process.py'), package='keju'))
+    source_python(system.file('python', 'process.py', package='keju'))
     
     keju <- use_motif_shrinkage(keju, G, infer_differential_activity)
     keju <- py_use_covariate_slope_intercept(keju)
