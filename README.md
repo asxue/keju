@@ -2,16 +2,13 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-**Keju** is an R package for scoring FACS-based DMS experiments with
-uncertainty quantification. It takes in a negative control group
-(usually synonymous variants) and scores each variant relative to the
-negative control group.
+**keju** is an R package for statistical analysis of Massively Parallel Reporter Assay (MPRA) data. 
 
 ## Installation
 
 ### R package installation
 
-**Keju** relies on [cmdstanr](https://mc-stan.org/cmdstanr/). To install cmdstanr, run
+**keju** relies on [cmdstanr](https://mc-stan.org/cmdstanr/). To install cmdstanr, run
 
 ``` r
 install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
