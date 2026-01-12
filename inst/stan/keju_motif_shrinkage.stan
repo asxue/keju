@@ -9,7 +9,6 @@ data {
   int<lower=1> N_DISPERSION_GROUPS;
   
   
-  array[E] int<lower=1, upper=P> tre_to_correction_factor;
   array[E] int<lower=1, upper=N_ALPHA_MOTIF> tre_to_motif;
   array[N] int<lower=1, upper=E> to_tre; 
   array[N_EFFECTS] int<lower=1, upper=N_EFFECT_MOTIF> effect_to_motif_x_treatment;
@@ -39,8 +38,6 @@ data {
 }
 
 parameters {
-  vector[P] intercept;
-  vector<lower=-1>[P] slope;
   vector[P] beta_correction;
   vector<lower=0>[N_DISPERSION_GROUPS] disp_r;
 
@@ -57,10 +54,7 @@ model {
   sigma2_alpha ~ inv_gamma(1, 1);
   motif_transcription_rate ~ normal(0, 1);
 
-  slope ~ normal(0, 1);
-  intercept ~ normal(0, 1);
-  alpha ~ normal((1 + slope[tre_to_correction_factor]) .* motif_transcription_rate[tre_to_motif] + intercept[tre_to_correction_factor],
-                 sqrt(sigma2_alpha[tre_to_motif]));
+  alpha ~ normal(motif_transcription_rate[tre_to_motif], sqrt(sigma2_alpha[tre_to_motif]));
 
   sigma2_beta ~ inv_gamma(1, 1);
   motif_effect ~ normal(0, 1);

@@ -3,16 +3,10 @@ data {
   int<lower=0> E; // number of TREs (including controls)
   int<lower=0> N; // total number of paired DNA - RNA readouts
 
-  int<lower=0> N_ALPHA_MOTIF;
   int<lower=1> N_EFFECTS;
-  int N_EFFECT_MOTIF;
   int<lower=1> N_DISPERSION_GROUPS;
   
-  
-  array[E] int<lower=1, upper=P> tre_to_correction_factor;
-  array[E] int<lower=1, upper=N_ALPHA_MOTIF> tre_to_motif;
   array[N] int<lower=1, upper=E> to_tre; 
-  array[N_EFFECTS] int<lower=1, upper=N_EFFECT_MOTIF> effect_to_motif_x_treatment;
   array[N] int<lower=1, upper=N_DISPERSION_GROUPS> to_dispersion_index;
 
   array[N] int<lower=0> R;
@@ -39,34 +33,16 @@ data {
 }
 
 parameters {
-  vector[P] intercept;
-  vector<lower=-1>[P] slope;
   vector[P] beta_correction;
   vector<lower=0>[N_DISPERSION_GROUPS] disp_r;
-
   vector[E] alpha;
-  vector<lower=0>[N_ALPHA_MOTIF] sigma2_alpha;
-  vector[N_ALPHA_MOTIF] motif_transcription_rate;
-
   vector[N_EFFECTS] beta;
-  vector<lower=0>[N_EFFECT_MOTIF] sigma2_beta;
-  vector[N_EFFECT_MOTIF] motif_effect;
 }
 
 model {
-  sigma2_alpha ~ inv_gamma(1, 1);
-  motif_transcription_rate ~ normal(0, 1);
-
-  slope ~ normal(0, 1);
-  intercept ~ normal(0, 1);
-  alpha ~ normal((1 + slope[tre_to_correction_factor]) .* motif_transcription_rate[tre_to_motif] + intercept[tre_to_correction_factor],
-                 sqrt(sigma2_alpha[tre_to_motif]));
-
-  sigma2_beta ~ inv_gamma(1, 1);
-  motif_effect ~ normal(0, 1);
+  alpha ~ normal(0, 1);
   beta_correction ~ normal(0, 1);
-  beta ~ normal(motif_effect[effect_to_motif_x_treatment], sqrt(sigma2_beta[effect_to_motif_x_treatment]));
-
+  beta ~ normal(0, 1);
   disp_r ~ exponential(1);
 
   R ~ neg_binomial_2_log(

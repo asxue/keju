@@ -3,10 +3,17 @@ Title: Analyze Massively Parallel Reporter Assay Data
 Version: 0.0.0.9000
 Authors@R: 
     person("Albert", "Xue", , "albertsxue@gmail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: A Bayesian hierarchical model for estimating transcription rate and differential activity in Massively Parallel Reporter Assay data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3.9000
 URL: https://github.com/asxue/keju
 BugReports: https://github.com/asxue/keju/issues
+Imports: 
+    cmdstanr,
+    dplyr,
+    reticulate,
+    utils
+Depends: 
+    R (>= 4.1.0)
