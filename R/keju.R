@@ -16,8 +16,7 @@ keju_fit <- function(
     infer_differential_activity=FALSE,
     seed = 1,
     chains = 4,
-    parallel_chains = 4,
-    DEBUG = FALSE
+    parallel_chains = 4
 ) {
     # check model
     if (model %in% c('no_motif', 'motif_shrinkage', 'covariate_motif_slope_intercept')) {
@@ -42,24 +41,12 @@ keju_fit <- function(
 
     mod <- cmdstan_model(stan_path)
 
-    if (DEBUG) {
-        fit <- mod$sample(data = keju$data,
-                        seed = seed,
-                        chains = chains,
-                        parallel_chains = parallel_chains,
-                        refresh = 100,
-                        iter_warmup = 5,
-                        iter_sampling = 5
-        )
-    } else {
-        fit <- mod$sample(data = keju$data,
-                        seed = seed,
-                        chains = chains,
-                        parallel_chains = parallel_chains,
-                        refresh = 100
-        )
-    }
-
+    fit <- mod$sample(data = keju$data,
+                    seed = seed,
+                    chains = chains,
+                    parallel_chains = parallel_chains,
+                    refresh = 100
+    )
 
     keju$diagnostics <- fit$diagnostic_summary()
     print(keju$diagnostics)

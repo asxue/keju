@@ -20,6 +20,7 @@ Depends:
     R (>= 4.1.0)
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    stringr
 VignetteBuilder: knitr
 StagedInstall: no
