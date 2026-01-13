@@ -44,6 +44,17 @@ library(keju)
 ```
 
 ## Using keju
+An introductory vignette can be found [here](TODO). If you run into problems, please submit and issue on github or email <albertsxue@gmail.com>.
 
-An introductory vignette can be found
-[here](TODO). If you run into problems, please submit and issue on github or email <albertsxue@gmail.com>.
+### Choosing the correct keju model
+**keju** is not a singular model, but a suite of models for different use cases that fit within each other, a little like Russian nesting dolls. As a result, choosing the correct model for your use case can be confusing. 
+
+The most general model, and our default recommended starting point, is `no_motif`. `no_motif` makes no assumptions on correlations between enhancers or architectures, and shrinks transcription rate estimates and effect size estimates towards a generic standard normal prior. Use `no_motif` if you don't have a concrete structure among your tested architectures, which many users will not. Even if you do have some kind of structure, `no_motif` will give you viable estimates, just without some motif-level bells and whistles.
+
+In contrast, some users can use `motif_shrinkage` if they have an exploitable structure in their tested architectures. An example of motif-level structure in the architectures is provided below from the [Zahm et al.](TODO) data, where several architectures are all actually testing the same Rarb transcription factor binding motif. In this case, `motif_shrinkage` shrinks estimates towards a shared motif-level mean, and will also provide *motif-level* estimates for transcription rate and effect sizes, not just architecture-level estimates. For example, in the example below `no_motif` and `motif_shrinkage` will both provide 18 transcription rate estimates and 18 effect size estimates, one for each architecture. However, `motif_shrinkage` will also provide a transcription rate estimate and effect size estimate for the motif itself, and the architecture-level estimates will be regularized to these motif-level estimates. Use `motif_shrinkage` if you have some kind of structure among your architectures. If you do not know if your structure qualifies, we recommend just using `no_motif`.
+
+[These architectures are all targeting the same transcription factor binding motif](motif.png)
+
+Finally, the most specialized model is `covariate_motif_slope_intercept`, also the full **keju** model. `covariate_motif_slope_intercept` requires motif-level structure, and is used in the case where the covariates provided in the model have interesting effects on transcription rate that we want to disentangle. As an example, in the [Zahm et al.](TODO) data, choice of minimal promoter strongly affects transcription rate estimates of each architecture (see Figure 4 in our paper). Use `covariate_motif_slope_intercept` if you want covariate-level slope and intercept estimates on transcription rate.
+
+If you have questions, the [vignette](TODO) may be helpful.

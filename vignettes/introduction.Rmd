@@ -19,6 +19,87 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(keju)
 library(dplyr)
+library(stringr)
 
-load(system.file("data", "par1_throm_subset.rda", package="keju"))
+df <- readRDS(system.file("extdata", "sf_dex.rda", package="keju"))
 ```
+
+```{r}
+df$is_control_treatment = (df$treatment == 'SF')
+df$is_control_architecture = (df$class == 'scramble' | df$class == 'spacer')
+```
+
+If this is the first time you have run keju, basilisk will install a conda environment with the necessary prerequisites for you.
+```{r}
+keju <- keju_from_counts(
+    barcode=df$barcode,
+    R = df$RNA_count,
+    D = df$DNA_count,
+    batch = df$RNA_sample_number,
+    dna_batch = df$DNA_sample_number,
+    architecture = df$architecture,
+    treatment = df$treatment,
+    is_control_treatment = df$is_control_treatment,
+    is_control_architecture = df$is_control_architecture
+)
+
+keju <- keju::filter(keju)
+keju <- process(keju, infer_differential_activity = TRUE)
+```
+
+```{r}
+output_dir <- 'keju_vignette'
+keju <- keju_fit(keju, paste0(output_dir, '/no_motif'), model='no_motif', infer_differential_activity=TRUE)
+```
+
+```{r}
+df$covariates = str_split_fixed(df$architecture, ', ', 4)[, 4]
+df$motif = str_split_fixed(df$architecture, ':', 2)[, 1]
+
+keju_ms <- keju_from_counts(
+    barcode=df$barcode,
+    R = df$RNA_count,
+    D = df$DNA_count,
+    batch = df$RNA_sample_number,
+    dna_batch = df$DNA_sample_number,
+    architecture = df$architecture,
+    treatment = df$treatment,
+    is_control_treatment = df$is_control_treatment,
+    is_control_architecture = df$is_control_architecture,
+    covariates = df$covariates,
+    motif = df$motif
+)
+
+keju_ms <- keju::filter(keju_ms)
+keju_ms <- use_motif_shrinkage(keju_ms, infer_differential_activity = TRUE)
+```
+
+```{r}
+keju_ms <- keju_fit(keju_ms, paste0(output_dir, '/motif_shrinkage'), model='motif_shrinkage', infer_differential_activity=TRUE)
+```
+
+```{r}
+keju_cmsi <- keju_from_counts(
+    barcode=df$barcode,
+    R = df$RNA_count,
+    D = df$DNA_count,
+    batch = df$RNA_sample_number,
+    dna_batch = df$DNA_sample_number,
+    architecture = df$architecture,
+    treatment = df$treatment,
+    is_control_treatment = df$is_control_treatment,
+    is_control_architecture = df$is_control_architecture,
+    covariates = df$covariates,
+    motif = df$motif
+)
+
+keju_cmsi <- keju::filter(keju_cmsi)
+keju_cmsi <- use_covariate_slope_intercept(keju_cmsi, infer_differential_activity = TRUE)
+```
+
+```{r}
+keju_cmsi <- keju_fit(keju_cmsi, paste0(output_dir, '/covariate_motif_slope_intercept'), 
+                 model='covariate_motif_slope_intercept', 
+                 infer_differential_activity=TRUE)
+```
+
