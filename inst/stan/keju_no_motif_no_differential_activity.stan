@@ -1,5 +1,4 @@
 data {
-  int<lower=0> P; // number of minimal correction effects
   int<lower=0> E; // number of TREs (including controls)
   int<lower=0> N; // total number of paired DNA - RNA readouts
   int<lower=1> N_DISPERSION_GROUPS;
