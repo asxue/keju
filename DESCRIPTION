@@ -23,4 +23,3 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 StagedInstall: no
-LazyData: true
