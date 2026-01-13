@@ -139,7 +139,6 @@ use_motif_shrinkage <- function(keju,
         return(keju) 
     }, keju=keju, G=G, infer_differential_activity=infer_differential_activity)
     
-    keju <- process(keju, G, infer_differential_activity)
     return(keju)
 }
 
