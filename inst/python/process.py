@@ -101,6 +101,7 @@ def py_use_motif_shrinkage(keju, infer_differential_activity):
         data['N_EFFECT_MOTIF'] = len(beta_motifs)
         keju['beta_motifs'] = beta_motifs
 
+    keju['data'] = data
     return keju
 
 def py_use_covariate_slope_intercept(keju):
@@ -112,6 +113,8 @@ def py_use_covariate_slope_intercept(keju):
     tre_to_covariate = df[['architecture', 'tre_id', 'covariates', 'covariate_id']].drop_duplicates()
     tre_to_covariate = tre_to_covariate.sort_values(by='tre_id')
     data['tre_to_correction_factor'] = tre_to_covariate['covariate_id'].tolist()
+
+    keju['data'] = data
     return keju
 
 def _create_normalization_factors(df):
