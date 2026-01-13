@@ -8,3 +8,7 @@ processing_env <- BasiliskEnvironment(envname="processing_keju",
                "pandas==2.2.3", 
                "formulaic==1.1.1")
 )
+
+.onLoad <- function() {
+    basilisk::configureBasiliskEnv()
+}

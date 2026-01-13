@@ -43,7 +43,7 @@ def py_process(keju, G, infer_differential_activity):
         # create correction factor model matrix
         Y, Yw, Yv, Yu, covariates = _create_model_matrix_csr(df, 'covariates', 'treatment_model_matrix')
 
-        data['P'] = len(covariates),
+        data['P'] = len(covariates)
         data['N_EFFECTS'] = len(effects)
         data['n_w'] = len(Xw)
         data['n_v'] = len(Xv)
