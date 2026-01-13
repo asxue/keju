@@ -93,6 +93,7 @@ process <- function(keju,
     if (is.null(keju$counts) & is.null(keju$filtered_counts)) {
         stop('No counts object or filtered_counts object detected. Please run keju_from_counts to create a counts first, and optionally filter counts using the built-in filtering function.')
     }
+
     # py_require("numpy")
     # py_require("pandas")
     # py_require("formulaic")
@@ -119,18 +120,26 @@ use_motif_shrinkage <- function(keju,
                                 infer_differential_activity=FALSE
 
 ) {
-    py_require("numpy")
-    py_require("pandas")
-    py_require("formulaic")
+    # py_require("numpy")
+    # py_require("pandas")
+    # py_require("formulaic")
 
-    source_python(system.file('python', 'process.py', package='keju'))
+    proc <- basiliskStart(processing_env)
+    on.exit(basiliskStop(proc))
+
+    keju <- basiliskRun(proc, fun=function(keju, G, infer_differential_activity) {
+        source_python(system.file('python', 'process.py', package='keju'))
+        keju <- process(keju, G, infer_differential_activity)
+
+        if(is.null(keju$df$motif)) {
+            stop('No motif information provided. Please set the motif parameter in keju_from_counts.')
+        }
+        keju <- py_use_motif_shrinkage(keju, infer_differential_activity)
+
+        return(keju) 
+    }, keju=keju, G=G, infer_differential_activity=infer_differential_activity)
     
     keju <- process(keju, G, infer_differential_activity)
-
-    if(is.null(keju$df$motif)) {
-        stop('No motif information provided. Please set the motif parameter in keju_from_counts.')
-    }
-    keju <- py_use_motif_shrinkage(keju, infer_differential_activity)
     return(keju)
 }
 
@@ -145,13 +154,15 @@ use_covariate_slope_intercept <- function(keju,
                                           G=50,
                                           infer_differential_activity=FALSE
 ) {
-    py_require("numpy")
-    py_require("pandas")
-    py_require("formulaic")
+    proc <- basiliskStart(processing_env)
+    on.exit(basiliskStop(proc))
 
-    source_python(system.file('python', 'process.py', package='keju'))
+    keju <- basiliskRun(proc, fun=function(keju, G, infer_differential_activity) {
+        source_python(system.file('python', 'process.py', package='keju'))
+            keju <- use_motif_shrinkage(keju, G, infer_differential_activity)
+            keju <- py_use_covariate_slope_intercept(keju)
+        return(keju) 
+    }, keju=keju, G=G, infer_differential_activity=infer_differential_activity)
     
-    keju <- use_motif_shrinkage(keju, G, infer_differential_activity)
-    keju <- py_use_covariate_slope_intercept(keju)
     return(keju)
 }
