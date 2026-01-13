@@ -45,7 +45,8 @@ keju_fit <- function(
                     seed = seed,
                     chains = chains,
                     parallel_chains = parallel_chains,
-                    refresh = 100
+                    refresh = 100,
+                    show_messages=TRUE
     )
 
     keju$diagnostics <- fit$diagnostic_summary()
