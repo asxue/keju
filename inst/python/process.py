@@ -168,8 +168,7 @@ def _create_model_matrix_csr(df, col1, col2):
     try:
         effects = [x.split(f']:{col2}[')[0].split(f'{col1}[')[1] for x in effects]
     except:
-        # effects = [x.split(':')[0] for x in effects]
-        effects = effects
+        effects = [x.split(':')[0] for x in effects]
     # effects = [x.split(f']:{col2}[T.')[0].split(f'{col1}[T.')[1] for x in effects] # reticulate throws error because of T. contrast levels
 
     return X, Xw, Xv, Xu, effects
