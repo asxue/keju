@@ -16,7 +16,6 @@ data {
 }
 
 parameters {
-  vector[P] beta_correction;
   vector<lower=0>[N_DISPERSION_GROUPS] disp_r;
 
   vector[E] alpha;
