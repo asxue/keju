@@ -22,7 +22,7 @@ keju_from_counts <- function(barcode,
                       treatment,
                       is_control_treatment = FALSE,
                       is_control_architecture = FALSE,
-                      covariates = 1,
+                      covariates = 'correction',
                       motif = NULL
 ) {
     counts <- data.frame(
