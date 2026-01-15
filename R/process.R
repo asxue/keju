@@ -85,7 +85,7 @@ filter <- function(keju, dna_threshold=5, rna_threshold=5, barcode_threshold=10)
 #' @param infer_differential_activity boolean to use effect size estimation with a control and alternate treatment
 #' @returns a keju object processed for the no_motif model
 #' @export
-process <- function(keju, 
+use_no_motif <- function(keju, 
                     G=50,
                     infer_differential_activity=FALSE
 ) {
@@ -129,7 +129,7 @@ use_motif_shrinkage <- function(keju,
 
     keju <- basiliskRun(proc, fun=function(keju, G, infer_differential_activity) {
         source_python(system.file('python', 'process.py', package='keju'))
-        keju <- process(keju, G, infer_differential_activity)
+        keju <- use_no_motif(keju, G, infer_differential_activity)
 
         if(is.null(keju$df$motif)) {
             stop('No motif information provided. Please set the motif parameter in keju_from_counts.')

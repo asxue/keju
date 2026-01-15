@@ -14,7 +14,7 @@ keju_from_counts(
   treatment,
   is_control_treatment = FALSE,
   is_control_architecture = FALSE,
-  covariates = 1,
+  covariates = "correction",
   motif = NULL
 )
 }
@@ -37,7 +37,7 @@ keju_from_counts(
 
 \item{is_control_architecture}{a length N boolean vector denoting architectures that are negative controls.}
 
-\item{covariates}{a length N vector denoting covariates to be used in effect size correction and potentially slope/intercept fitting. If none, will default to a vector of length N}
+\item{covariates}{a length N vector denoting covariates to be used in effect size correction and potentially slope/intercept fitting. If none, will default to a vector of ones of length N, to perform global effect size correction.}
 
 \item{motif}{a length N vector denoting motifs shared across architectures. Used to shrink architecture-level estimates to a shared motif-level estimate. Necessary for motif_shrinkage and covariate_motif_slope_intercept models.}
 }
