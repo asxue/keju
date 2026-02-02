@@ -78,6 +78,7 @@ pretty_summarize <- function(
     correction_effects <- keju$correction_effects
     
     alphas <- fit[startsWith(rownames(fit), 'alpha['),]
+    alphas$architecture <- keju$tres
     rownames(alphas) <- keju$tres
     keju$alphas_estimate <- alphas
     write.csv(alphas, gsub("//", "/", file.path(output_folder, 'alphas.csv')))
@@ -85,11 +86,13 @@ pretty_summarize <- function(
     if (infer_differential_activity) {
         betas <- fit[startsWith(rownames(fit), 'beta['),]
         betas$is_significant = (betas$q5 > 0) | (betas$q95 < 0)
+        betas$architecture <- keju$effects
         rownames(betas) <- keju$effects
         keju$betas_estimate <- betas
         write.csv(betas, gsub("//", "/", file.path(output_folder, 'betas.csv')))   
 
         covariates <- fit[startsWith(rownames(fit), 'beta_correction['),]  
+        covariates$name <- keju$covariates
         rownames(covariates) <- keju$covariates
         keju$covariates_estimate <- covariates
         write.csv(covariates, gsub("//", "/", file.path(output_folder, 'covariate_effects.csv')))
@@ -99,6 +102,7 @@ pretty_summarize <- function(
 
     if (model != 'no_motif') {
         alpha_motifs <- fit[startsWith(rownames(fit), 'motif_transcription_rate['),]
+        alpha_motifs$motif <- keju$alpha_motifs
         rownames(alpha_motifs) <- keju$alpha_motifs
         keju$alpha_motifs_estimate <- alpha_motifs
         write.csv(alpha_motifs, gsub("//", "/", file.path(output_folder, 'motifs_alphas.csv')))
@@ -106,6 +110,7 @@ pretty_summarize <- function(
         if (infer_differential_activity) {
             beta_motifs <- fit[startsWith(rownames(fit), 'motif_effect['),]
             beta_motifs$is_significant = (beta_motifs$q5 > 0) | (beta_motifs$q95 < 0)
+            beta_motifs$motif <- keju$beta_motifs
             rownames(beta_motifs) <- keju$beta_motifs
             keju$beta_motifs_estimate <- beta_motifs
             write.csv(beta_motifs, gsub("//", "/", file.path(output_folder, 'motif_betas.csv')))
@@ -114,6 +119,9 @@ pretty_summarize <- function(
         if (model == 'covariate_motif_slope_intercept') {
             slope <- fit[startsWith(rownames(fit), 'slope['),]
             intercept <- fit[startsWith(rownames(fit), 'intercept['),]
+
+            slope$covariate <- keju$covariates
+            intercept$covariate <- keju$covariates
 
             rownames(slope) <- keju$covariates
             rownames(intercept) <- keju$covariates
