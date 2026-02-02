@@ -56,7 +56,7 @@ keju_fit <- function(
     keju$fit = fit_summary
 
     write.csv(fit_summary, gsub("//", "/", file.path(output_folder, 'fit_summary.csv')))
-    pretty_summarize(keju, model, output_folder, infer_differential_activity)
+    keju <- pretty_summarize(keju, model, output_folder, infer_differential_activity)
     return(keju)
 }
 
