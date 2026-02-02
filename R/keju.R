@@ -125,5 +125,5 @@ pretty_summarize <- function(
             write.csv(intercept, gsub("//", "/", file.path(output_folder, 'covariate_intercepts.csv')))
         }
     }
-
+    return(keju)
 }
